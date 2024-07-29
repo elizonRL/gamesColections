@@ -1,16 +1,20 @@
 import express from "express";
+import { allGames, createGame } from "../controllers/games.controllers.js";
 
 const router = express.Router();
-const data = [];
+
 
 router
   .route("/")
-  .get((req, res) => {
-    res.status(200).json(data);
+  .get(async(req, res) => {
+    res.status(200).json(await allGames());
   })
-  .post((req, res) => {
-    data.push(req.body);
-    res.status(201).json(data);
+  .post(async(req, res) => {
+    const name = req.body.name;
+    const description = req.body.description;
+    await createGame(name, description)
+    
+    res.status(201).send('ok');
   });
 
 export default router;
